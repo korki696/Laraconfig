@@ -2,7 +2,7 @@
 
 namespace DarkGhostHunter\Laraconfig\Eloquent\Casts;
 
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DateTimeInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
@@ -18,7 +18,7 @@ class DynamicCasting implements CastsAttributes
     /**
      * Transform the attribute from the underlying model values.
      *
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Setting|\DarkGhostHunter\Laraconfig\Eloquent\Metadata  $model
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Setting|\DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $model
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
@@ -40,13 +40,13 @@ class DynamicCasting implements CastsAttributes
             return $value;
         }
 
-        return match ($attributes['type'] ??= Metadata::whereKey($attributes['metadata_id'])->value('type')) {
-            Metadata::TYPE_ARRAY => Arr::wrap(json_decode($value, true, 512, JSON_THROW_ON_ERROR)),
-            Metadata::TYPE_BOOLEAN => (bool) $value,
-            Metadata::TYPE_DATETIME => Carbon::parse($value),
-            Metadata::TYPE_COLLECTION => new Collection(Arr::wrap(json_decode($value, true, 512, JSON_THROW_ON_ERROR))),
-            Metadata::TYPE_FLOAT => (float) $value,
-            Metadata::TYPE_INTEGER => (int) $value,
+        return match ($attributes['type'] ??= SettingMetadata::whereKey($attributes['metadata_id'])->value('type')) {
+            SettingMetadata::TYPE_ARRAY => Arr::wrap(json_decode($value, true, 512, JSON_THROW_ON_ERROR)),
+            SettingMetadata::TYPE_BOOLEAN => (bool) $value,
+            SettingMetadata::TYPE_DATETIME => Carbon::parse($value),
+            SettingMetadata::TYPE_COLLECTION => new Collection(Arr::wrap(json_decode($value, true, 512, JSON_THROW_ON_ERROR))),
+            SettingMetadata::TYPE_FLOAT => (float) $value,
+            SettingMetadata::TYPE_INTEGER => (int) $value,
             default => $value,
         };
     }
@@ -54,7 +54,7 @@ class DynamicCasting implements CastsAttributes
     /**
      * Transform the attribute to its underlying model values.
      *
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Setting|\DarkGhostHunter\Laraconfig\Eloquent\Metadata  $model
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Setting|\DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $model
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
@@ -76,14 +76,14 @@ class DynamicCasting implements CastsAttributes
             return $value;
         }
 
-        return match ($attributes['type'] ??= Metadata::whereKey($attributes['metadata_id'])->value('type')) {
-            Metadata::TYPE_COLLECTION,
-            Metadata::TYPE_ARRAY => json_encode(is_array($value) ? Arr::wrap($value) : $value, JSON_THROW_ON_ERROR),
-            Metadata::TYPE_BOOLEAN => (bool) $value,
-            Metadata::TYPE_DATETIME => Carbon::parse($value),
-            Metadata::TYPE_STRING => (string) $value,
-            Metadata::TYPE_INTEGER => (int) $value,
-            Metadata::TYPE_FLOAT => (float) $value,
+        return match ($attributes['type'] ??= SettingMetadata::whereKey($attributes['metadata_id'])->value('type')) {
+            SettingMetadata::TYPE_COLLECTION,
+            SettingMetadata::TYPE_ARRAY => json_encode(is_array($value) ? Arr::wrap($value) : $value, JSON_THROW_ON_ERROR),
+            SettingMetadata::TYPE_BOOLEAN => (bool) $value,
+            SettingMetadata::TYPE_DATETIME => Carbon::parse($value),
+            SettingMetadata::TYPE_STRING => (string) $value,
+            SettingMetadata::TYPE_INTEGER => (int) $value,
+            SettingMetadata::TYPE_FLOAT => (float) $value,
             default => $value,
         };
     }

@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Migrator\Pipes;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 
 /**
@@ -21,7 +21,7 @@ class LoadMetadata
      */
     public function handle(Data $data, Closure $next): mixed
     {
-        $data->metadata = Metadata::all()->keyBy(static fn(Metadata $metadata): string => $metadata->name);
+        $data->metadata = SettingMetadata::all()->keyBy(static fn(SettingMetadata $metadata): string => $metadata->name);
 
         return $next($data);
     }

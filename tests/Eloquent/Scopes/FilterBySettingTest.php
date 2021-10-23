@@ -2,7 +2,7 @@
 
 namespace Tests\Eloquent\Scopes;
 
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Scopes\AddMetadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DarkGhostHunter\Laraconfig\HasConfig;
@@ -33,7 +33,7 @@ class FilterBySettingTest extends BaseTestCase
             'value' => 'foo-value',
             'settable_type' => $model->getMorphClass(),
             'settable_id' => $model->getKey(),
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'foo',
                 'type'  => 'string',
                 'group' => 'default',
@@ -45,7 +45,7 @@ class FilterBySettingTest extends BaseTestCase
             'value' => 'baz-value',
             'settable_type' => $model->getMorphClass(),
             'settable_id' => $model->getKey(),
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'baz',
                 'type'  => 'string',
                 'group' => 'default',
@@ -57,7 +57,7 @@ class FilterBySettingTest extends BaseTestCase
             'value' => 'quz-value',
             'settable_type' => $model->getMorphClass(),
             'settable_id' => $model->getKey(),
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'quz',
                 'type'  => 'string',
                 'group' => 'default',
@@ -69,7 +69,7 @@ class FilterBySettingTest extends BaseTestCase
             'value' => 'qux-value',
             'settable_type' => $model->getMorphClass(),
             'settable_id' => $model->getKey(),
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'qux',
                 'type'  => 'string',
                 'group' => 'default',
@@ -174,8 +174,8 @@ class FilterBySettingTest extends BaseTestCase
 
         $this->createSettingsForUser($user);
 
-        Metadata::query()->whereKey(1)->update([
-            'type' => Metadata::TYPE_INTEGER,
+        SettingMetadata::query()->whereKey(1)->update([
+            'type' => SettingMetadata::TYPE_INTEGER,
         ]);
 
         Setting::query()->whereKey(1)->update([

@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Migrator\Pipes;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Eloquent\Collection;
@@ -50,15 +50,15 @@ class RemoveOldMetadata
     }
 
     /**
-     * Returns a collection of Metadata not present in the manifest.
+     * Returns a collection of SettingMetadata not present in the manifest.
      *
      * @param  \DarkGhostHunter\Laraconfig\Migrator\Data  $data
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\DarkGhostHunter\Laraconfig\Eloquent\Metadata[]
+     * @return \Illuminate\Database\Eloquent\Collection|\DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata[]
      */
     protected function toDelete(Data $data): Collection
     {
-        return $data->metadata->reject(static function (Metadata $metadata) use ($data): bool {
+        return $data->metadata->reject(static function (SettingMetadata $metadata) use ($data): bool {
             return $data->declarations->has($metadata->name);
         });
     }

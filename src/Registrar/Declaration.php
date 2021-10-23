@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Registrar;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 
 class Declaration
 {
@@ -14,7 +14,7 @@ class Declaration
      *
      * @var string
      */
-    public string $type = Metadata::TYPE_STRING;
+    public string $type = SettingMetadata::TYPE_STRING;
 
     /**
      * The default value, if any.
@@ -78,7 +78,7 @@ class Declaration
      */
     public function string(): static
     {
-        $this->type = Metadata::TYPE_STRING;
+        $this->type = SettingMetadata::TYPE_STRING;
 
         return $this;
     }
@@ -90,7 +90,7 @@ class Declaration
      */
     public function boolean(): static
     {
-        $this->type = Metadata::TYPE_BOOLEAN;
+        $this->type = SettingMetadata::TYPE_BOOLEAN;
 
         return $this;
     }
@@ -102,7 +102,7 @@ class Declaration
      */
     public function integer(): static
     {
-        $this->type = Metadata::TYPE_INTEGER;
+        $this->type = SettingMetadata::TYPE_INTEGER;
 
         return $this;
     }
@@ -114,7 +114,7 @@ class Declaration
      */
     public function float(): static
     {
-        $this->type = Metadata::TYPE_FLOAT;
+        $this->type = SettingMetadata::TYPE_FLOAT;
 
         return $this;
     }
@@ -126,7 +126,7 @@ class Declaration
      */
     public function array(): static
     {
-        $this->type = Metadata::TYPE_ARRAY;
+        $this->type = SettingMetadata::TYPE_ARRAY;
 
         return $this;
     }
@@ -138,7 +138,7 @@ class Declaration
      */
     public function datetime(): static
     {
-        $this->type = Metadata::TYPE_DATETIME;
+        $this->type = SettingMetadata::TYPE_DATETIME;
 
         return $this;
     }
@@ -150,7 +150,7 @@ class Declaration
      */
     public function collection(): static
     {
-        $this->type = Metadata::TYPE_COLLECTION;
+        $this->type = SettingMetadata::TYPE_COLLECTION;
 
         return $this;
     }
@@ -238,13 +238,13 @@ class Declaration
     }
 
     /**
-     * Transforms the Declaration to a Metadata Model.
+     * Transforms the Declaration to a SettingMetadata Model.
      *
-     * @return \DarkGhostHunter\Laraconfig\Eloquent\Metadata
+     * @return \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata
      */
-    public function toMetadata(): Metadata
+    public function toMetadata(): SettingMetadata
     {
-        return (new Metadata)->forceFill([
+        return (new SettingMetadata)->forceFill([
             'name'          => $this->name,
             'type'          => $this->type,
             'default'       => $this->default,

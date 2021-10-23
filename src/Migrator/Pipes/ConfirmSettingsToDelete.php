@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Migrator\Pipes;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Foundation\Application;
@@ -73,7 +73,7 @@ class ConfirmSettingsToDelete
      */
     protected function deletableMetadata(Data $data): int
     {
-        return $data->metadata->reject(static function (Metadata $metadata) use ($data): bool {
+        return $data->metadata->reject(static function (SettingMetadata $metadata) use ($data): bool {
             return $data->declarations->has($metadata->name);
         })->count();
     }

@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
+use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Scopes\FilterBags;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DarkGhostHunter\Laraconfig\HasConfig;
@@ -27,14 +27,14 @@ class HasConfigTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    protected Metadata $metadata;
+    protected SettingMetadata $metadata;
     protected Setting $setting;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->metadata = Metadata::make()->forceFill([
+        $this->metadata = SettingMetadata::make()->forceFill([
             'name'    => 'foo',
             'type'    => 'string',
             'default' => 'bar',
@@ -216,7 +216,7 @@ class HasConfigTest extends BaseTestCase
 
     public function test_returns_all_settings(): void
     {
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'bar',
             'type'  => 'string',
             'bag'   => 'users',
@@ -229,7 +229,7 @@ class HasConfigTest extends BaseTestCase
             'metadata_id'   => 2,
         ]);
 
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'baz',
             'type'  => 'string',
             'bag'   => 'users',
@@ -252,7 +252,7 @@ class HasConfigTest extends BaseTestCase
 
     public function test_returns_only_some_settings(): void
     {
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'bar',
             'type'  => 'string',
             'bag'   => 'users',
@@ -265,7 +265,7 @@ class HasConfigTest extends BaseTestCase
             'metadata_id'   => 2,
         ]);
 
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'baz',
             'type'  => 'string',
             'bag'   => 'users',
@@ -289,7 +289,7 @@ class HasConfigTest extends BaseTestCase
 
     public function test_returns_except_some_settings(): void
     {
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'bar',
             'type'  => 'string',
             'bag'   => 'users',
@@ -302,7 +302,7 @@ class HasConfigTest extends BaseTestCase
             'metadata_id'   => 2,
         ]);
 
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'baz',
             'type'  => 'string',
             'bag'   => 'users',
@@ -361,14 +361,14 @@ class HasConfigTest extends BaseTestCase
 
     public function test_filters_settings_by_model_bags(): void
     {
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'bar',
             'type'  => 'string',
             'group' => 'default',
             'bag'   => 'test-bag',
         ]);
 
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'baz',
             'type'  => 'string',
             'group' => 'default',
@@ -695,7 +695,7 @@ class HasConfigTest extends BaseTestCase
         Setting::forceCreate([
             'settable_type' => DummyModel::class,
             'settable_id' => 1,
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'baz',
                 'type'  => 'string',
                 'bag'   => 'users',
@@ -706,7 +706,7 @@ class HasConfigTest extends BaseTestCase
         Setting::forceCreate([
             'settable_type' => DummyModel::class,
             'settable_id' => 1,
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'quz',
                 'type'  => 'string',
                 'bag'   => 'users',
@@ -717,7 +717,7 @@ class HasConfigTest extends BaseTestCase
         Setting::forceCreate([
             'settable_type' => DummyModel::class,
             'settable_id' => 1,
-            'metadata_id' => Metadata::forceCreate([
+            'metadata_id' => SettingMetadata::forceCreate([
                 'name'  => 'qux',
                 'type'  => 'string',
                 'bag'   => 'users',
@@ -737,21 +737,21 @@ class HasConfigTest extends BaseTestCase
 
     public function test_filters_bags(): void
     {
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'baz',
             'type'  => 'string',
             'bag'   => 'users',
             'group' => 'default',
         ]);
 
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'quz',
             'type'  => 'string',
             'bag'   => 'test-bag',
             'group' => 'test-default',
         ]);
 
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'  => 'qux',
             'type'  => 'string',
             'bag'   => 'test-bag',
@@ -869,7 +869,7 @@ class HasConfigTest extends BaseTestCase
 
     public function test_deletes_settings_when_model_force_deletes_itself(): void
     {
-        Metadata::forceCreate([
+        SettingMetadata::forceCreate([
             'name'    => 'bar',
             'type'    => 'string',
             'default' => 'quz',
@@ -915,7 +915,7 @@ class HasConfigTest extends BaseTestCase
             'value' => 'quz',
             'settable_id' => 1,
             'settable_type' => (new DummyModel())->getMorphClass(),
-            'metadata_id' =>  Metadata::forceCreate([
+            'metadata_id' =>  SettingMetadata::forceCreate([
                 'name'    => 'bar',
                 'type'    => 'string',
                 'default' => 'quz',
@@ -933,7 +933,7 @@ class HasConfigTest extends BaseTestCase
 
     public function test_allows_to_disable_bag_filter(): void
     {
-       Metadata::forceCreate([
+       SettingMetadata::forceCreate([
             'name'    => 'bar',
             'type'    => 'string',
             'default' => 'quz',
