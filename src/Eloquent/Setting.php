@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $group // Added by the "add-metadata" global scope.
  * @property-read string $bag // Added by the "add-metadata" global scope.
  *
- * @property-read \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata $metadata
+ * @property-read \DarkGhostHunter\Laraconfig\Eloquent\Metadata $metadata
  */
 class Setting extends Model
 {
@@ -106,7 +106,7 @@ class Setting extends Model
      */
     public function metadata(): BelongsTo
     {
-        return $this->belongsTo(SettingMetadata::class, 'metadata_id');
+        return $this->belongsTo(Metadata::class, 'metadata_id');
     }
 
     /**
@@ -120,13 +120,13 @@ class Setting extends Model
     }
 
     /**
-     * Fills the settings data from a SettingMetadata model instance.
+     * Fills the settings data from a Metadata model instance.
      *
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $metadata
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $metadata
      *
      * @return $this
      */
-    public function fillFromMetadata(SettingMetadata $metadata): static
+    public function fillFromMetadata(Metadata $metadata): static
     {
         return $this->forceFill(
             $metadata->only('name', 'type', 'default', 'group', 'bag')

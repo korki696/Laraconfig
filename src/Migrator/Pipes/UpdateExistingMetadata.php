@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Migrator\Pipes;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 use DarkGhostHunter\Laraconfig\Registrar\Declaration;
@@ -65,7 +65,7 @@ class UpdateExistingMetadata
         // equal to them. If it doesn't exists, it must be created, and if it's equal
         // to the original metadata, no changes should be made to it.
         return $data->declarations->filter(static function (Declaration $declaration) use ($data): bool {
-            /** @var \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata $metadata */
+            /** @var \DarkGhostHunter\Laraconfig\Eloquent\Metadata $metadata */
             if ($metadata = $data->metadata->get($declaration->name)) {
                 $placeholder = $declaration->toMetadata();
 
@@ -87,7 +87,7 @@ class UpdateExistingMetadata
      */
     protected function updateMetadata(Data $data, Declaration $declaration): int
     {
-        /** @var \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata $metadata */
+        /** @var \DarkGhostHunter\Laraconfig\Eloquent\Metadata $metadata */
         $metadata = $data->metadata->get($declaration->name);
 
         $metadata->forceFill([
@@ -114,11 +114,11 @@ class UpdateExistingMetadata
      * Update each child setting (of each user) using the declaration procedure.
      *
      * @param  \DarkGhostHunter\Laraconfig\Registrar\Declaration  $declaration
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $metadata
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $metadata
      *
      * @return int
      */
-    protected function updateSettingValues(Declaration $declaration, SettingMetadata $metadata): int
+    protected function updateSettingValues(Declaration $declaration, Metadata $metadata): int
     {
         // Since we're updating the settings of each user, we will just iterate over
         // each of them one by one and just hit the "update" button on the setting.

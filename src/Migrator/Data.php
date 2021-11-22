@@ -11,9 +11,9 @@ use Illuminate\Support\Collection;
 class Data
 {
     /**
-     * Database SettingMetadata.
+     * Database Metadata.
      *
-     * @var \Illuminate\Database\Eloquent\Collection|\DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata[]
+     * @var \Illuminate\Database\Eloquent\Collection|\DarkGhostHunter\Laraconfig\Eloquent\Metadata[]
      */
     public EloquentCollection $metadata;
 

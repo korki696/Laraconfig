@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Migrator\Pipes;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 use Illuminate\Console\OutputStyle;
@@ -48,7 +48,7 @@ class ConfirmSettingsRefresh
 
             // Truncate both tables.
             Setting::query()->truncate();
-            SettingMetadata::query()->truncate();
+            Metadata::query()->truncate();
 
             // Reset the metadata collection since there is nothing left.
             $data->metadata = new Collection();
@@ -75,7 +75,7 @@ class ConfirmSettingsRefresh
      */
     protected function shouldPrompt(): bool
     {
-        return SettingMetadata::query()->exists()
+        return Metadata::query()->exists()
             && $this->app->environment('production')
             && ! $this->input->getOption('force');
     }

@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laraconfig\Migrator\Pipes;
 
 use Closure;
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 use DarkGhostHunter\Laraconfig\Registrar\Declaration;
@@ -68,9 +68,9 @@ class CreateNewMetadata
      *
      * @param  \DarkGhostHunter\Laraconfig\Registrar\Declaration  $declaration
      *
-     * @return \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata
+     * @return \DarkGhostHunter\Laraconfig\Eloquent\Metadata
      */
-    protected function createMetadata(Declaration $declaration): SettingMetadata
+    protected function createMetadata(Declaration $declaration): Metadata
     {
         return tap($declaration->toMetadata())->save();
     }
@@ -90,20 +90,20 @@ class CreateNewMetadata
     }
 
     /**
-     * Fill the settings of the newly created SettingMetadata.
+     * Fill the settings of the newly created Metadata.
      *
      * @param  \DarkGhostHunter\Laraconfig\Registrar\Declaration  $declaration
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $metadata
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $metadata
      * @param  \Illuminate\Support\Collection  $models
      * @param  \DarkGhostHunter\Laraconfig\Migrator\Data  $data
      *
      * @return int
      */
     protected function fillSettingsFromMetadata(
-        Declaration     $declaration,
-        SettingMetadata $metadata,
-        Collection      $models,
-        Data            $data
+        Declaration $declaration,
+        Metadata $metadata,
+        Collection $models,
+        Data $data
     ): int
     {
         // If the new metadata is not using "from", we will just create the settings
@@ -131,18 +131,18 @@ class CreateNewMetadata
     /**
      * Fill the settings for each of the models using settings.
      *
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $metadata
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $metadata
      * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model[]  $models
      *
      * @return int
      */
-    protected function fillSettings(SettingMetadata $metadata, Collection $models): int
+    protected function fillSettings(Metadata $metadata, Collection $models): int
     {
         $affected = 0;
 
         // We will run an SQL query to create the settings for each user by
         // simply inserting them by each user. We will also point the ID of
-        // both the SettingMetadata parent and user, along with the default value.
+        // both the Metadata parent and user, along with the default value.
         foreach ($models as $model) {
             $affected += Setting::query()->insertUsing(
                 ['metadata_id', 'settable_id', 'settable_type', 'value', 'created_at', 'updated_at'],
@@ -150,7 +150,7 @@ class CreateNewMetadata
                     ->select([
                     DB::raw("'{$metadata->getKey()}' as metadata_id"),
                     DB::raw("{$model->getKeyName()} as settable_id"),
-                    DB::raw("'{$model->getMorphClass()}' as settable_type"),
+                    DB::raw("'" . addslashes($model->getMorphClass()) . "' as settable_type"),
                     DB::raw("'{$metadata->getRawOriginal('default', 'NULL')}' as value"),
                     DB::raw("'{$this->now->toDateTimeString()}' as created_at"),
                     DB::raw("'{$this->now->toDateTimeString()}' as updated_at"),
@@ -164,12 +164,12 @@ class CreateNewMetadata
     /**
      * Copy the settings for each of the models from the old setting.
      *
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $new
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $old
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $new
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $old
      *
      * @return int
      */
-    protected function copySettings(SettingMetadata $new, SettingMetadata $old): int
+    protected function copySettings(Metadata $new, Metadata $old): int
     {
         // We will simply query all the settings that reference the old metadata
         // and "clone" each model set, but using the new metadata id.
@@ -191,12 +191,12 @@ class CreateNewMetadata
      * Feeds each old setting to a procedure that saves the new setting value.
      *
      * @param  \DarkGhostHunter\Laraconfig\Registrar\Declaration  $declaration
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $new
-     * @param  \DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata  $old
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $new
+     * @param  \DarkGhostHunter\Laraconfig\Eloquent\Metadata  $old
      *
      * @return int
      */
-    protected function migrateSettings(Declaration $declaration, SettingMetadata $new, SettingMetadata $old): int
+    protected function migrateSettings(Declaration $declaration, Metadata $new, Metadata $old): int
     {
         $affected = 0;
 

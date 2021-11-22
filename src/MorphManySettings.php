@@ -2,7 +2,7 @@
 
 namespace DarkGhostHunter\Laraconfig;
 
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -126,11 +126,18 @@ class MorphManySettings extends MorphMany
         // Add the collection to the relation, avoiding retrieving them again later.
         $this->getParent()->setRelation('settings', $settings = new SettingsCollection());
 
-        foreach (SettingMetadata::query()->lazyById(column: 'id') as $metadatum) {
-            $setting = $query->make()->forceFill([
-                'metadata_id' => $metadatum->getKey(),
-                'value' => $metadatum->default
-            ]);
+        foreach (Metadata::query()->lazyById(column: 'id') as $metadatum) {
+            if ($metadatum->type == 'array'){
+                $setting = $query->make()->forceFill([
+                    'metadata_id' => $metadatum->getKey(),
+                    'value' => json_encode($metadatum->default)
+                ]);
+            }else {
+                $setting = $query->make()->forceFill([
+                    'metadata_id' => $metadatum->getKey(),
+                    'value' => $metadatum->default
+                ]);
+            }
 
             $setting->saveQuietly();
 
@@ -151,7 +158,7 @@ class MorphManySettings extends MorphMany
      */
     public function isInitialized(): bool
     {
-        return $this->getParent()->settings()->count() === SettingMetadata::query()->count();
+        return $this->getParent()->settings()->count() === Metadata::query()->count();
     }
 
     /**

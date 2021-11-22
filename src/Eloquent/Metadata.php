@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @internal
  */
-class SettingMetadata extends Model
+class Metadata extends Model
 {
     /* Just a bunch of constant to check the type of the declaration */
     public const TYPE_ARRAY = 'array';

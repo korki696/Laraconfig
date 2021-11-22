@@ -2,7 +2,7 @@
 
 namespace DarkGhostHunter\Laraconfig\Eloquent\Scopes;
 
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -50,7 +50,7 @@ class AddMetadata implements Scope
      */
     protected static function getColumns(): array
     {
-        $model = new SettingMetadata();
+        $model = new Metadata();
 
         foreach ($columns = ['name', 'type', 'bag', 'default', 'group'] as $key => $column) {
             $columns[$key] = "{$model->qualifyColumn($column)} as $column";

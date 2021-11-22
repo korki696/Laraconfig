@@ -2,10 +2,12 @@
 
 namespace DarkGhostHunter\Laraconfig\Console\Commands;
 
+use App\Models\User;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
 use DarkGhostHunter\Laraconfig\Migrator\Migrator;
 use Illuminate\Console\Command;
 use Illuminate\Console\OutputStyle;
+use Illuminate\Support\Collection;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -40,6 +42,7 @@ class MigrateCommand extends Command
     public function __construct(protected Migrator $migrator, protected Data $data)
     {
         parent::__construct();
+            $this->data->models = new Collection([app(User::class)]);
     }
 
     /**
