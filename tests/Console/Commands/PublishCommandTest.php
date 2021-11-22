@@ -2,7 +2,7 @@
 
 namespace Tests\Console\Commands;
 
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting as SettingModel;
 use DarkGhostHunter\Laraconfig\Facades\Setting;
 use DarkGhostHunter\Laraconfig\Migrator\Data;

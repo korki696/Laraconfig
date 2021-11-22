@@ -2,7 +2,7 @@
 
 namespace Tests\Console\Commands;
 
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +41,7 @@ class CleanCommandTest extends BaseTestCase
 
     public function test_cleans_orphaned_settings(): void
     {
-        SettingMetadata::forceCreate([
+        Metadata::forceCreate([
             'name' => 'foo',
             'type' => 'string',
             'default' => 'foo-value',

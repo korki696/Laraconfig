@@ -2,7 +2,7 @@
 
 namespace Tests\Eloquent\Models;
 
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Scopes\AddMetadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting;
 use DarkGhostHunter\Laraconfig\SettingsCache;
@@ -15,14 +15,14 @@ class SettingTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    protected SettingMetadata $metadata;
+    protected Metadata $metadata;
     protected Setting $setting;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->metadata = SettingMetadata::make()->forceFill([
+        $this->metadata = Metadata::make()->forceFill([
             'name'    => 'foo',
             'type'    => 'string',
             'default' => 'bar',

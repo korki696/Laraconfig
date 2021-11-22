@@ -2,7 +2,7 @@
 
 namespace Tests\Console\Commands;
 
-use DarkGhostHunter\Laraconfig\Eloquent\SettingMetadata;
+use DarkGhostHunter\Laraconfig\Eloquent\Metadata;
 use DarkGhostHunter\Laraconfig\Eloquent\Setting as SettingModel;
 use DarkGhostHunter\Laraconfig\Facades\Setting;
 use DarkGhostHunter\Laraconfig\Migrator\Data;
@@ -107,7 +107,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_confirms_deletion_on_production(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'name' => 'foo',
             'type' => 'string',
             'default' => null,
@@ -136,7 +136,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_bypass_confirms_deletion_on_production_with_force(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'name' => 'foo',
             'type' => 'string',
             'default' => null,
@@ -164,7 +164,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_confirms_full_refresh_on_production(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'name' => 'foo',
             'type' => 'string',
             'default' => null,
@@ -193,7 +193,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_bypass_confirms_full_refresh_on_production_with_force(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'name' => 'foo',
             'type' => 'string',
             'default' => null,
@@ -461,7 +461,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_deletes_old_settings(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'id' => 1,
             'name' => 'foo',
             'type' => 'string',
@@ -587,7 +587,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_exception_when_migration_target_doesnt_exists(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'id' => 1,
             'name' => 'foo',
             'type' => 'string',
@@ -608,7 +608,7 @@ class MigrateCommandTest extends BaseTestCase
 
     public function test_exception_when_models_use_same_table(): void
     {
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'name' => 'foo',
             'type' => 'string',
             'default' => null,
@@ -642,7 +642,7 @@ class MigrateCommandTest extends BaseTestCase
     {
         config()->set('laraconfig.cache.enable', true);
 
-        SettingMetadata::make()->forceFill([
+        Metadata::make()->forceFill([
             'name' => 'foo',
             'type' => 'string',
             'default' => null,
